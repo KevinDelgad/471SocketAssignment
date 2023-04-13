@@ -12,4 +12,6 @@ print("Server is ready to recieve!")
 
 while(True):
     connectionSocket, addr = welcomeSocket.accept()
+    print("Connection Recieved!")
     connectionSocket.close()
+    break
