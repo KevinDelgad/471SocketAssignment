@@ -27,7 +27,7 @@ while(True):
         with open(targetFile, "w") as fileObj:
             fileObj.write(fileData)
 
-        print(f"{targetFile ({fileData})} bytes)")
+        print(f"{targetFile} ({len(fileData)}) bytes)")
 
     if command == 'put':
         print("Successful Put Request")
