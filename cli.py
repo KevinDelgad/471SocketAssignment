@@ -9,29 +9,34 @@ else:
     server_name = sys.argv[1]
     server_port = int(sys.argv[2])
 
-client_socket = socket(AF_INET, SOCK_STREAM)
-client_socket.connect((server_name, server_port))
+connectionSocket = socket(AF_INET, SOCK_STREAM)
+connectionSocket.connect((server_name, server_port))
 
-print("ftp> ")
 acceptableRequests = ['get', 'put', 'ls', 'quit']
 
 while(True):
-    
-    splitCommand = input().split()
+    command = input("ftp> ").strip()
+    connectionSocket.send(command.encode())
+    splitCommand = command.split()
     command = splitCommand[0]
 
-    if(command == 'get'):
-        print("get success")
-    if(command == 'put'):
-        print("put succes")
-    if(command == 'ls'):
-        print("ls success")
-    if(command == 'quit'):
-        print("quit success")
+    if command == 'get':
+        targetFile = splitCommand[1]
+        fileData = connectionSocket.recv(1024).decode()
+        
+        with open(targetFile, "w") as fileObj:
+            fileObj.write(fileData)
+
+        print(f"{targetFile ({fileData})} bytes)")
+
+    if command == 'put':
+        print("Successful Put Request")
+
+    if command == 'ls':
+        print("Successful ls Request")
+
+    if command == 'quit':
+        print("Successfully Quit")
     
     
-#input = ('get', 'put', 'ls', 'quit')
-#if(command in acceptableRequests):
-#    print("Valid Request")
-#else:
-#    print("Request not found")
+
