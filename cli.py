@@ -30,6 +30,7 @@ while(True):
         print(f"{targetFile} ({len(fileData)}) bytes)")
 
     if command == 'put':
+
         print("Successful Put Request")
 
     if command == 'ls':
