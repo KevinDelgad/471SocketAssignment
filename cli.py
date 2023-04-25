@@ -30,14 +30,36 @@ while(True):
         print(f"{targetFile} ({len(fileData)}) bytes)")
 
     if command == 'put':
+        fileData = 0
+        fileObj = open(targetFile, "r")
+
+        fileData = fileObj.read()
+        dataSize = str(len(fileData))
+
+        while(len(dataSize) < 10):
+            dataSize = '0' + dataSize
+
+        fileData = dataSize + " | File Content: " + fileData
+
+        numSent = 0
+
+        while(numSent < len(fileData)):
+            numSent += connectionSocket.send(fileData[numSent:].encode())
+
+        fileObj.close() 
+
 
         print("Successful Put Request")
 
     if command == 'ls':
-        print("Successful ls Request")
 
+        fileData = connectionSocket.recv(1024).decode()
+
+        print("Successful ls Request")
     if command == 'quit':
-        print("Successfully Quit")
+            connectionSocket.close()
+            break
+    
     
     
 
