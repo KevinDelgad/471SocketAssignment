@@ -90,14 +90,18 @@ while(True):
         recvFileData = recvAll(connectionSocket, fileSize)
         print(recvFileData)
 
-    if(command == "ls"):
+    if command == "ls":
         listedData = subprocess.getstatusoutput('ls')[1]
-            
+
         listedDataSize = len(listedData)
         listedDataNumSent = 0
 
-        while(listedDataNumSent < listedDataSize):
+        while listedDataNumSent < listedDataSize:
             listedDataNumSent += connectionSocket.send(listedData[listedDataNumSent:].encode())
+
+        # Had to add sending null byte after transmitting all the listed data to let client know it ended
+        connectionSocket.send(b'\0')
+
 
     if(command in acceptableRequests):
         connectionSocket.send(("Sucessful Command").encode())

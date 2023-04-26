@@ -9,6 +9,7 @@ else:
     server_name = sys.argv[1]
     server_port = int(sys.argv[2])
 
+bufferSize = 1024
 connectionSocket = socket(AF_INET, SOCK_STREAM)
 connectionSocket.connect((server_name, server_port))
 
@@ -52,12 +53,26 @@ while(True):
         print("Successful Put Request")
 
     if command == 'ls':
+        connectionSocket.sendall('ls'.encode())
 
-        fileData = connectionSocket.recv(1024).decode()
+    listedData = b''
+    while True:
+        data = connectionSocket.recv(bufferSize)
+        if b'\0' in data:
+            data = data.replace(b'\0', b'')
+            listedData += data
+            break
+        elif not data:
+            break
+        else:
+            listedData += data
 
-        print("Successful ls Request")
+    print(listedData.decode())
+ 
     if command == 'quit':
+            connectionSocket.sendall(b'quit')
             connectionSocket.close()
+            sys.exit(0)
             break
     
     
