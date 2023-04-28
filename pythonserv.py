@@ -107,9 +107,9 @@ while(True):
 
 
         if(command in acceptableRequests):
-            tempSocket.send(("Sucessful Command").encode())
+            tempSocket.send(("\nSucessful Command").encode())
         else:
-            tempSocket.send(("Unsucessful Command").encode())
+            tempSocket.send(("\nUnsucessful Command").encode())
 
         if(command == "quit"):
             connectionSocket.close()
