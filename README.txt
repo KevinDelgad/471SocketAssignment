@@ -1,4 +1,4 @@
-Kevin Delgado - 
+Kevin Delgado - Kevindel@csu.Fullerton.edu
 Mason Cotterill - masoncotterill@csu.fullerton.edu
 Python
 – How to execute your program.
