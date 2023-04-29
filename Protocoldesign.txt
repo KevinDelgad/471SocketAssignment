@@ -1,0 +1,30 @@
+1. What kinds of messages will be exchanged across the control channel?
+
+The messages exchanged across the channel are “get”, “put”, “ls”, and “quit”.
+
+2. How should the other side respond to the messages?
+
+- To a “get” request the server will respond by reading the file the user has specified, format that file with the size header, and send the data over the socket connection.
+- To a “put” command it receives the file data over the socket connection, receives the file size as a 10-byte string and converts it into an int, then receives the file content based on size and prints it in the console.
+- The “ls” command lists the files in the directory and sends this output via the socket connection, it ends this transmission with a null byte to indicate the end of listed data.
+- The “quit” command, the server listens for this and when it is given this request it closes the socket connection and exits the loop.
+
+3. What sizes/formats will the messages have?
+
+The messages are encoded which converts the string to bytes using UTF-8, because without encoding the connections do not work with strings.
+
+4. What message exchanges have to take place in order to set up a file transfer channel?
+
+- The client initiates a connection to the server by specifying the server's IP and port number.
+- The server listens for incoming connections on that port and accepts the client's connection request.
+- The client then creates a temp socket and binds it to a random (ephemeral) port and sends metadata messages to the server.
+- The server accepts the metadata message and extracts the temp port number and creates a new socket to connect to.
+- The client receives data through this socket and processes data according to the specific command.
+
+5. How will the receiving side know when to start/stop receiving the file?
+
+The receiving side knows when to start and stop based on the file size info provided in the sending side, with the file size in the message both sides can manage file transfer without wasting data.
+
+6. How to avoid overflowing TCP buffers?
+
+We avoided overflowing TCP buffers by defining a fixed buffer size of 1024, which only allows the sender to send it a small size that fits into that frame.
